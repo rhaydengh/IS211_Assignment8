@@ -24,7 +24,8 @@ class Player(object):
         self.name = name
         self.score = 0
 
-    def play(self):
+    def play(self, timed='n'):
+        self.timed = timed
         print "----------------------------------------------------------"
         print "Player", self.name, "begin"
         print "Current score is {}".format(self.score)
@@ -71,6 +72,35 @@ class ComputerPlayer(Player):
 
         print "next player"
 
+class TimedGameProxy(Player):
+    """timed game of pig"""
+    def __init__(self):
+        self.start = time.time()
+        Player.__init__(self, 'player1, player2')
+
+    def timer(self):
+        p1=player_factory("Al", "H")
+        p2 = player_factory("PC Becca", 'C')
+
+        if self.timed == 'y':
+
+            while time.time() - self.start >= 60 and p1.score < 100 and p2.score < 100:
+                p1.play()
+                if p1.score >= 100:
+                    print "{} wins".format(p1.name)
+                    break
+                p2.play()
+                if p2.score >= 100:
+                    print "{} wins".format(p2.name)
+                    break
+                if time.time() - self.start >= 60:
+                    if pl.score > p2.score:
+                        print "Game over, Player1 wins"
+                    elif p2.score > p1.score:
+                        print "Game over, Player1 wins"
+                    elif p1.score == p2.score:
+                        print "Game over, TIE GAME"
+
 
 def main():
     p1 = player_factory("Al", "H")
@@ -84,7 +114,7 @@ def main():
         if p2.score >= 100:
             print "{} wins".format(p2.name)
             break
-
+            
 
 if __name__ == "__main__":
     main()
